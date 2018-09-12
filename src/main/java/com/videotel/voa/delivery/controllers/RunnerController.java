@@ -3,6 +3,7 @@ package com.videotel.voa.delivery.controllers;
 import com.videotel.voa.shared.AssessmentTestWrapper;
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,7 @@ import java.util.Date;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+@CrossOrigin
 @RequestMapping("/api/runner/")
 @RestController
 public class RunnerController {
@@ -44,6 +46,7 @@ public class RunnerController {
     public String index() {
         return "VOA QTI Assessment POC";
     }
+
 
     @RequestMapping(value="/start", method = GET)
     public SimpleChoiceRenderer start() {
