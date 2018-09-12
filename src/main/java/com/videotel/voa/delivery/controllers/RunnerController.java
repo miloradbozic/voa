@@ -1,5 +1,6 @@
 package com.videotel.voa.delivery.controllers;
 
+import com.videotel.voa.response.ChoiceResponse;
 import com.videotel.voa.shared.AssessmentTestWrapper;
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
 import org.springframework.http.MediaType;
@@ -37,6 +38,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class RunnerController {
 
     private AssessmentTestWrapper test;
+    private int currentQuestion = 1;
 
     public RunnerController() {
         test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
@@ -49,7 +51,7 @@ public class RunnerController {
 
 
     @RequestMapping(value="/start", method = GET)
-    public SimpleChoiceRenderer start() {
+    public ChoiceResponse start() {
 
         Date testEntryTimestamp = new Date();
         Date testPartEntryTimestamp = ObjectUtilities.addToTime(testEntryTimestamp, 1000L);
@@ -59,15 +61,17 @@ public class RunnerController {
 
         System.out.println("\r\nRendering the next item:");
         //test.getCurrentItem().renderItem();
-        return test.getCurrentItem().getInteraction(0);
+        SimpleChoiceRenderer renderer = test.getCurrentItem().getInteraction(0);
+        return new ChoiceResponse(renderer, 3, currentQuestion++);
     }
 
     @RequestMapping(value="/next", method = GET)
-    public SimpleChoiceRenderer next() {
+    public ChoiceResponse next() {
         System.out.println("\nMoving to the next item...");
         test.testSessionController.advanceItemLinear(new Date());
         //test.getCurrentItem().renderItem();
-        return test.getCurrentItem().getInteraction(0);
+        SimpleChoiceRenderer renderer = test.getCurrentItem().getInteraction(0);
+        return new ChoiceResponse(renderer, 3, currentQuestion++);
     }
 
 }

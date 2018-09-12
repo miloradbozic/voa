@@ -109,6 +109,8 @@ public class AssessmentTestWrapper {
         TestPlanNodeKey currentItemKey = this.testSessionState.getCurrentItemKey();
         TestPlanNode currentTestPlanNode = this.testSessionState.getTestPlan().getNode(currentItemKey);
         String path = currentTestPlanNode.getItemSystemId().toString();
+        System.out.println(currentItemKey);
+        System.out.println(path);
         return new AssessmentItemWrapper(path);
     }
 
