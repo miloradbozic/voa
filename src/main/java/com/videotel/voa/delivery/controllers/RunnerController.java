@@ -41,7 +41,7 @@ public class RunnerController {
     private int currentQuestion = 1;
 
     public RunnerController() {
-        test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
+
     }
 
     @RequestMapping(method = GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -53,11 +53,15 @@ public class RunnerController {
     @RequestMapping(value="/start", method = GET)
     public ChoiceResponse start() {
 
+        test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
+        currentQuestion = 1;
         Date testEntryTimestamp = new Date();
         Date testPartEntryTimestamp = ObjectUtilities.addToTime(testEntryTimestamp, 1000L);
 
+
         System.out.println("Entering the test");
         test.enterTest();
+
 
         System.out.println("\r\nRendering the next item:");
         //test.getCurrentItem().renderItem();
