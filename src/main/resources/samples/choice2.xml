@@ -6,7 +6,7 @@
 				identifier="choice" title="Unattended Luggage" adaptive="false" timeDependent="false">
 	<responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
 		<correctResponse>
-			<value>ChoiceA</value>
+			<value>c1</value>
 		</correctResponse>
 	</responseDeclaration>
 	<outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
@@ -21,9 +21,9 @@
 		</p>
 		<choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
 			<prompt>Who created first airplane?</prompt>
-			<simpleChoice identifier="ChoiceA">Wright brothers</simpleChoice>
-			<simpleChoice identifier="ChoiceB">Wilson brothers</simpleChoice>
-			<simpleChoice identifier="ChoiceC">Gyllenhaal brothers</simpleChoice>
+			<simpleChoice identifier="c1">Wright brothers</simpleChoice>
+			<simpleChoice identifier="c2">Wilson brothers</simpleChoice>
+			<simpleChoice identifier="c3">Gyllenhaal brothers</simpleChoice>
 		</choiceInteraction>
 	</itemBody>
 	<responseProcessing

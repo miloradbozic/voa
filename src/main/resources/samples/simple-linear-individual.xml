@@ -20,7 +20,7 @@
     <assessmentSection identifier="s" title="Section" visible="true">
       <assessmentItemRef identifier="i1" href="choice.xml"/>
       <assessmentItemRef identifier="i2" href="choice2.xml"/>
-      <assessmentItemRef identifier="i2" href="choice3.xml"/>
+      <assessmentItemRef identifier="i3" href="choice3.xml"/>
     </assessmentSection>
   </testPart>
   <outcomeProcessing>

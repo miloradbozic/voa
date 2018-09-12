@@ -6,7 +6,7 @@
 				identifier="choice" title="Unattended Luggage" adaptive="false" timeDependent="false">
 	<responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
 		<correctResponse>
-			<value>ChoiceB</value>
+			<value>c2</value>
 		</correctResponse>
 	</responseDeclaration>
 	<outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
@@ -21,9 +21,9 @@
 		</p>
 		<choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
 			<prompt>When was John F. Kennedy assassinated?</prompt>
-			<simpleChoice identifier="ChoiceA">September 12, 1964</simpleChoice>
-			<simpleChoice identifier="ChoiceB">November 22, 1963</simpleChoice>
-			<simpleChoice identifier="ChoiceC">October 13, 1961</simpleChoice>
+			<simpleChoice identifier="c1">September 12, 1964</simpleChoice>
+			<simpleChoice identifier="c2">November 22, 1963</simpleChoice>
+			<simpleChoice identifier="c3">October 13, 1961</simpleChoice>
 		</choiceInteraction>
 	</itemBody>
 	<responseProcessing

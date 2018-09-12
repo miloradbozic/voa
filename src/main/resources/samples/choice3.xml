@@ -6,7 +6,7 @@
 				identifier="choice" title="Unattended Luggage" adaptive="false" timeDependent="false">
 	<responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
 		<correctResponse>
-			<value>ChoiceA</value>
+			<value>c1</value>
 		</correctResponse>
 	</responseDeclaration>
 	<outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
@@ -21,8 +21,8 @@
 		</p>
 		<choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
 			<prompt>What insect inspired the term "computer bug"?</prompt>
-			<simpleChoice identifier="ChoiceA">Moth</simpleChoice>
-			<simpleChoice identifier="ChoiceB">Roach</simpleChoice>
+			<simpleChoice identifier="c1">Moth</simpleChoice>
+			<simpleChoice identifier="c2">Roach</simpleChoice>
 		</choiceInteraction>
 	</itemBody>
 	<responseProcessing

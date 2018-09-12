@@ -26,9 +26,15 @@ public class AssessmentItemWrapper {
     protected ItemSessionState itemSessionState;
     protected ItemProcessingMap itemProcessingMap;
     String filePath = null;
+    String identifier = null; //only when created from assessment
 
     public AssessmentItemWrapper(String filePath) {
         this.filePath = filePath;
+        this.initItemSessionController();
+    }
+    public AssessmentItemWrapper(String filePath, String identifier) {
+        this.filePath = filePath;
+        this.identifier = identifier;
         this.initItemSessionController();
     }
 
@@ -91,6 +97,7 @@ public class AssessmentItemWrapper {
         List<Interaction> interactions = this.itemProcessingMap.getInteractions();
         TextRun tr2= (TextRun) interactions.get(index).getNodeGroups().get(0).getChildren().get(0).getNodeGroups().get(0).getChildren().get(0);
         String question = tr2.getTextContent();
+        renderer.setId(this.identifier.substring((1)));
         renderer.setQuestion(question);
 
         List<String> choices = new ArrayList<>();

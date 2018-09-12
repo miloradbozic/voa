@@ -3,18 +3,18 @@ package com.videotel.voa.response;
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
 
 public class ChoiceResponse {
-    SimpleChoiceRenderer interaction;
+    SimpleChoiceRenderer question;
     int total;
     int current;
 
-    public ChoiceResponse(SimpleChoiceRenderer interaction, int total, int current) {
-        this.interaction = interaction;
+    public ChoiceResponse(SimpleChoiceRenderer question, int total, int current) {
+        this.question = question;
         this.total = total;
         this.current = current;
     }
 
-    public SimpleChoiceRenderer getInteraction() {
-        return interaction;
+    public SimpleChoiceRenderer getQuestion() {
+        return question;
     }
 
     public int getTotal() {
@@ -25,8 +25,8 @@ public class ChoiceResponse {
         return current;
     }
 
-    public void setInteraction(SimpleChoiceRenderer renderer) {
-        this.interaction = interaction;
+    public void setQuestion(SimpleChoiceRenderer renderer) {
+        this.question = question;
     }
 
     public void setTotal(int total) {
