@@ -1,6 +1,7 @@
 package com.videotel.voa.delivery.controllers;
 
 import com.videotel.voa.response.ChoiceResponse;
+import com.videotel.voa.response.TestSummaryResponse;
 import com.videotel.voa.shared.AssessmentTestWrapper;
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import uk.ac.ed.ph.jqtiplus.reading.QtiXmlReader;
 import uk.ac.ed.ph.jqtiplus.resolution.AssessmentObjectResolver;
 import uk.ac.ed.ph.jqtiplus.resolution.ResolvedAssessmentItem;
 import uk.ac.ed.ph.jqtiplus.serialization.QtiSerializer;
+import uk.ac.ed.ph.jqtiplus.state.TestPlanNode;
 import uk.ac.ed.ph.jqtiplus.types.Identifier;
 import uk.ac.ed.ph.jqtiplus.validation.AssessmentObjectValidator;
 import uk.ac.ed.ph.jqtiplus.validation.ItemValidationResult;
@@ -78,7 +80,6 @@ public class RunnerController {
         System.out.println(answerId);
 
         test.handleChoiceResponse(new Date(), "c" + answerId);
-
         //get score item1
         String scoreItem1 = test.getItemScore(1); //i1
         System.out.println("First item score: " + scoreItem1);
@@ -97,5 +98,52 @@ public class RunnerController {
 
         return Collections.singletonMap("status", "OK"); //use map to return json response, probably there is a nicer way
     }
+
+    @RequestMapping(value = "/finish", method = POST)
+    public TestSummaryResponse finish() {
+        test.testSessionController.endCurrentTestPart(new Date());
+        test.testSessionController.enterNextAvailableTestPart(new Date()); // when no more it sets text exit time so we can exit it
+        test.testSessionController.exitTest(new Date());
+
+        TestSummaryResponse testSummary = new TestSummaryResponse();
+
+        for (TestPlanNode itemRef : test.getItemRefs()) {
+            /* TODO: refactor to have a class like AssessmentItem which contains the session from the test, so we can pull this data */
+            testSummary.addQuestionResponse(
+                    "TODO", //test.getItemQuestion(itemRef),
+                    test.getItemScore(itemRef).equals("1.0") ? true : false, //test.isItemRespondedCorrectly(itemRef),
+                    "This is responded answer",//test.getItemProvidedAnswer(itemRef),
+                    "This is correct answer", //test.getItemCorrectAnswer(itemRef),
+                    test.getItemScore(itemRef)
+            );
+
+            //System.out.println(itemRef.getIdentifier().toString() + " item score: " +  test.getItemScore(itemRef));
+        }
+
+        testSummary.setDuration(String.valueOf(test.testSessionState.computeDuration()));
+        testSummary.setScore(test.getScore());
+
+        return testSummary;
+
+
+//        //score item1
+//        String scoreItem1 = test.getItemScore(1); //i1
+//        System.out.println("First item score: " + scoreItem1);
+//
+//        //score item2
+//        String scoreItem2 = test.getItemScore(2); //i2
+//        System.out.println("Second item score: " + scoreItem2);
+//
+//        //score item3
+//        String scoreItem3 = test.getItemScore(3); //i3
+//        System.out.println("Third item score: " + scoreItem3);
+
+        //check if test scoring is performed
+//        boolean processed = test.isOutcomeProcessed();
+//        System.out.println("Test processed: " + processed);
+//        return ResponseEntity.ok("OK");
+    }
+
+
 
 }
