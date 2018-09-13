@@ -8,6 +8,7 @@ import uk.ac.ed.ph.jqtiplus.types.Identifier;
 import uk.ac.ed.ph.jqtiplus.types.ResponseData;
 import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
 import uk.ac.ed.ph.jqtiplus.value.BooleanValue;
+import uk.ac.ed.ph.jqtiplus.value.FloatValue;
 
 import java.util.*;
 
@@ -49,6 +50,7 @@ public class AssessmentTestWrapper {
 
         // @todo: we want to be able to access nodes by identifiers (i1, i2 etc)
         itemRefs = testPlan.getTestPartNodes().get(0).searchDescendants(TestPlanNode.TestNodeType.ASSESSMENT_ITEM_REF);
+        //Todo debud : this.getItemQuestion(itemRefs.get(0));
 //        testPlanNodesByIdentifierStringMap = new HashMap<String, TestPlanNode>();
 //        for (final String testNodeIdentifierString : testNodes()) {
 //            final TestPlanNode testPlanNode = TestHelper.getSingleTestPlanNode(testPlan, testNodeIdentifierString);
@@ -93,7 +95,7 @@ public class AssessmentTestWrapper {
     public String getItemScore(TestPlanNode itemRefNode) {
         //this.testSessionController.selectItemNonlinear(new Date(), itemRefNode.getKey());
         ItemSessionState itemSessionState = this.getItemSessionState(itemRefNode);
-        return itemSessionState.getOutcomeValue(CHOICE_ITEM_SCORE).toString();
+        return String.valueOf(((FloatValue)itemSessionState.getOutcomeValue(CHOICE_ITEM_SCORE)).doubleValue());
     }
 
     public boolean isOutcomeProcessed() {
@@ -102,7 +104,7 @@ public class AssessmentTestWrapper {
 
     // @todo return Double type
     public String getScore() {
-        return testSessionState.getOutcomeValue(TEST_SCORE).toString();
+        return testSessionState.getOutcomeValue(TEST_SCORE).toQtiString();
     }
 
     /*** functions important for rendering ***/
@@ -156,7 +158,11 @@ public class AssessmentTestWrapper {
 
     public String getItemProvidedAnswer(TestPlanNode itemRef) {
         ItemSessionState itemSessionState = this.getItemSessionState(itemRef);
-        return itemSessionState.getResponseValues().get(0).toString();
+        Map res = itemSessionState.getResponseValues();
+        Object respponse = res.get("RESPONSE");
+        Object r2 = res.values();
+        return itemSessionState.getResponseValues().get("RESPONSE").toString();
+        //return itemSessionState.getResponseValues()
     }
 
     public String getItemCorrectAnswer(TestPlanNode itemRef) {

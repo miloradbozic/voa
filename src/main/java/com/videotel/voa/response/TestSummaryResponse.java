@@ -1,9 +1,10 @@
 package com.videotel.voa.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestSummaryResponse {
-    List<QuestionResponse> questionResponses;
+    List<QuestionResponse> questionResponses = new ArrayList<>();
     String score;
     String duration;
 
