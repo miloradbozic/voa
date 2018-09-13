@@ -9,9 +9,7 @@ import uk.ac.ed.ph.jqtiplus.types.ResponseData;
 import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
 import uk.ac.ed.ph.jqtiplus.value.BooleanValue;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
 @missing functions:
@@ -29,6 +27,8 @@ public class AssessmentTestWrapper {
     public TestSessionState testSessionState;       //@todo refactor
     protected TestPlan testPlan;
     protected TestProcessingMap testProcessingMap;
+    protected List<TestPlanNode> itemRefs = new ArrayList<>();
+
     String filePath;
     protected String getTestFilePath() {
         return this.filePath;
@@ -48,6 +48,7 @@ public class AssessmentTestWrapper {
         this.testProcessingMap = testSessionController.getTestProcessingMap();
 
         // @todo: we want to be able to access nodes by identifiers (i1, i2 etc)
+        itemRefs = testPlan.getTestPartNodes().get(0).searchDescendants(TestPlanNode.TestNodeType.ASSESSMENT_ITEM_REF);
 //        testPlanNodesByIdentifierStringMap = new HashMap<String, TestPlanNode>();
 //        for (final String testNodeIdentifierString : testNodes()) {
 //            final TestPlanNode testPlanNode = TestHelper.getSingleTestPlanNode(testPlan, testNodeIdentifierString);
@@ -81,8 +82,17 @@ public class AssessmentTestWrapper {
     public String getItemScore(int identifier) {
         //@todo: we want map of identifiers instead of accessing like this
         int id = identifier - 1;
+        TestPlanNode itemRefNode = this.itemRefs.get(id);
+        return this.getItemScore(itemRefNode);
+    }
+
+    public List<TestPlanNode> getItemRefs() {
+        return itemRefs;
+    }
+
+    public String getItemScore(TestPlanNode itemRefNode) {
         //this.testSessionController.selectItemNonlinear(new Date(), itemRefNode.getKey());
-        ItemSessionState itemSessionState = this.getItemSessionState(id);
+        ItemSessionState itemSessionState = this.getItemSessionState(itemRefNode);
         return itemSessionState.getOutcomeValue(CHOICE_ITEM_SCORE).toString();
     }
 
@@ -99,6 +109,10 @@ public class AssessmentTestWrapper {
     public String getItemPathByIdentifier(int identifier) {
         int id = identifier - 1;
         TestPlanNode itemRefNode = this.getItemRefNode(id);
+        return getItemPathByRefNode(itemRefNode);
+    }
+
+    public String getItemPathByRefNode(TestPlanNode itemRefNode) {
         AssessmentItemRef assessmentItemRef = (AssessmentItemRef) this.testProcessingMap.resolveAbstractPart(itemRefNode);
         return assessmentItemRef.getHref().toString();
     }
@@ -117,13 +131,35 @@ public class AssessmentTestWrapper {
         return new AssessmentItemWrapper("classpath:/com/videotel/samples/" + path);
     }
 
+    public AssessmentItemWrapper getItem(TestPlanNode itemRef) {
+        String path = this.getItemPathByRefNode(itemRef);
+        return new AssessmentItemWrapper("classpath:/com/videotel/samples/" + path);
+    }
+
     /** Private methods ***/
     private TestPlanNode getItemRefNode(int id) {
         return testPlan.getTestPartNodes().get(0).searchDescendants(TestPlanNode.TestNodeType.ASSESSMENT_ITEM_REF).get(id);
     }
 
-    private ItemSessionState getItemSessionState(int id) {
-        TestPlanNode itemRefNode = this.getItemRefNode(id);
+    private ItemSessionState getItemSessionState(TestPlanNode itemRefNode) {
         return this.testSessionState.getItemSessionStates().get(itemRefNode.getKey());
+    }
+
+    public boolean isItemRespondedCorrectly(TestPlanNode itemRef) {
+        ItemSessionState itemSessionState = this.getItemSessionState(itemRef);
+        return itemSessionState.isRespondedValidly();
+    }
+
+    public String getItemQuestion(TestPlanNode itemRef) {
+        return this.getItem(itemRef).getInteraction(0).getQuestionText();
+    }
+
+    public String getItemProvidedAnswer(TestPlanNode itemRef) {
+        ItemSessionState itemSessionState = this.getItemSessionState(itemRef);
+        return itemSessionState.getResponseValues().get(0).toString();
+    }
+
+    public String getItemCorrectAnswer(TestPlanNode itemRef) {
+        return this.getItem(itemRef).itemProcessingMap.getValidResponseDeclarationMap().get(0).getCorrectResponse().getInterpretation();
     }
 }
