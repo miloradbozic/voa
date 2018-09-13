@@ -97,7 +97,11 @@ public class AssessmentItemWrapper {
         List<Interaction> interactions = this.itemProcessingMap.getInteractions();
         TextRun tr2= (TextRun) interactions.get(index).getNodeGroups().get(0).getChildren().get(0).getNodeGroups().get(0).getChildren().get(0);
         String question = tr2.getTextContent();
-        renderer.setId(this.identifier.substring((1)));
+        if (this.identifier != null) {
+            //only in the context of a test
+            renderer.setId(this.identifier.substring((1)));
+        }
+
         renderer.setQuestion(question);
 
         List<String> choices = new ArrayList<>();

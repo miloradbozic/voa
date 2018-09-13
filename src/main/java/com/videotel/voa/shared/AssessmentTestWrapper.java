@@ -1,5 +1,8 @@
 package com.videotel.voa.shared;
 
+import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
+import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
+import uk.ac.ed.ph.jqtiplus.node.item.interaction.Interaction;
 import uk.ac.ed.ph.jqtiplus.node.test.AssessmentItemRef;
 import uk.ac.ed.ph.jqtiplus.node.test.TestPart;
 import uk.ac.ed.ph.jqtiplus.running.TestSessionController;
@@ -9,6 +12,7 @@ import uk.ac.ed.ph.jqtiplus.types.ResponseData;
 import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
 import uk.ac.ed.ph.jqtiplus.value.BooleanValue;
 import uk.ac.ed.ph.jqtiplus.value.FloatValue;
+import uk.ac.ed.ph.jqtiplus.value.Value;
 
 import java.util.*;
 
@@ -130,12 +134,12 @@ public class AssessmentTestWrapper {
     /* Returns the item with the given identifier */
     public AssessmentItemWrapper getItem(int identifier) {
         String path = this.getItemPathByIdentifier(identifier);
-        return new AssessmentItemWrapper("classpath:/com/videotel/samples/" + path);
+        return new AssessmentItemWrapper("classpath:/samples/" + path, "i"+identifier);
     }
 
     public AssessmentItemWrapper getItem(TestPlanNode itemRef) {
         String path = this.getItemPathByRefNode(itemRef);
-        return new AssessmentItemWrapper("classpath:/com/videotel/samples/" + path);
+        return new AssessmentItemWrapper("classpath:/samples/" + path, itemRef.getIdentifier().toString());
     }
 
     /** Private methods ***/
@@ -158,14 +162,31 @@ public class AssessmentTestWrapper {
 
     public String getItemProvidedAnswer(TestPlanNode itemRef) {
         ItemSessionState itemSessionState = this.getItemSessionState(itemRef);
-        Map res = itemSessionState.getResponseValues();
-        Object respponse = res.get("RESPONSE");
-        Object r2 = res.values();
-        return itemSessionState.getResponseValues().get("RESPONSE").toString();
-        //return itemSessionState.getResponseValues()
+        AssessmentItemWrapper item = this.getItem(itemRef);
+        Interaction interaction = item.itemProcessingMap.getInteractions().get(0);
+        Value responseValue = itemSessionState.getResponseValue(interaction);
+        String responseIdentifier = responseValue.toQtiString();
+        if (responseIdentifier.equals("NULL")) {
+            return "No answer provided.";
+        }
+
+        String identifier = responseIdentifier.substring(1);
+        System.out.println(identifier);
+        System.out.println(responseIdentifier);
+        SimpleChoiceRenderer renderer = item.getInteraction(0);
+        for (String choice : renderer.getChoices().keySet()) {
+            System.out.println(choice);
+        }
+
+        return renderer.getChoices().get(identifier);
     }
 
     public String getItemCorrectAnswer(TestPlanNode itemRef) {
-        return this.getItem(itemRef).itemProcessingMap.getValidResponseDeclarationMap().get(0).getCorrectResponse().getInterpretation();
+        Map decMap = this.getItem(itemRef).itemProcessingMap.getValidResponseDeclarationMap();
+        AssessmentItemWrapper item = this.getItem(itemRef);
+        //item.itemSessionState.getOverriddenCorrectResponseValue()
+
+        return "NE ZNAM";
+        //return this.getItem(itemRef).itemProcessingMap.getValidResponseDeclarationMap().get(0).getCorrectResponse().getInterpretation();
     }
 }

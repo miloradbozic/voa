@@ -110,10 +110,10 @@ public class RunnerController {
         for (TestPlanNode itemRef : test.getItemRefs()) {
             /* TODO: refactor to have a class like AssessmentItem which contains the session from the test, so we can pull this data */
             testSummary.addQuestionResponse(
-                    "TODO", //test.getItemQuestion(itemRef),
+                    test.getItemQuestion(itemRef),
                     test.getItemScore(itemRef).equals("1.0") ? true : false, //test.isItemRespondedCorrectly(itemRef),
-                    "This is responded answer",//test.getItemProvidedAnswer(itemRef),
-                    "This is correct answer", //test.getItemCorrectAnswer(itemRef),
+                    test.getItemProvidedAnswer(itemRef),
+                    test.getItemCorrectAnswer(itemRef),
                     test.getItemScore(itemRef)
             );
 
