@@ -27,8 +27,10 @@ import uk.ac.ed.ph.jqtiplus.value.Cardinality;
 import uk.ac.ed.ph.jqtiplus.value.FloatValue;
 import uk.ac.ed.ph.jqtiplus.xmlutils.locators.NullResourceLocator;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -72,7 +74,7 @@ public class RunnerController {
     }
 
     @RequestMapping(value = "/submit-answer", method = POST)
-    public ResponseEntity add(@RequestParam("answerId") String answerId) {
+    public Map add(@RequestParam("answerId") String answerId) {
         System.out.println(answerId);
 
         test.handleChoiceResponse(new Date(), "c" + answerId);
@@ -92,7 +94,8 @@ public class RunnerController {
         //check if test scoring is performed
         boolean processed = test.isOutcomeProcessed();
         System.out.println("Test processed: " + processed);
-        return ResponseEntity.ok("OK");
+
+        return Collections.singletonMap("status", "OK"); //use map to return json response, probably there is a nicer way
     }
 
 }
