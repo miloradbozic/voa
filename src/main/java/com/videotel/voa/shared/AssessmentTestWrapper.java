@@ -2,7 +2,10 @@ package com.videotel.voa.shared;
 
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
 import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
+import uk.ac.ed.ph.jqtiplus.node.item.CorrectResponse;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.Interaction;
+import uk.ac.ed.ph.jqtiplus.node.item.response.declaration.ResponseDeclaration;
+import uk.ac.ed.ph.jqtiplus.node.shared.FieldValue;
 import uk.ac.ed.ph.jqtiplus.node.test.AssessmentItemRef;
 import uk.ac.ed.ph.jqtiplus.node.test.TestPart;
 import uk.ac.ed.ph.jqtiplus.running.TestSessionController;
@@ -169,24 +172,23 @@ public class AssessmentTestWrapper {
         if (responseIdentifier.equals("NULL")) {
             return "No answer provided.";
         }
-
         String identifier = responseIdentifier.substring(1);
-        System.out.println(identifier);
-        System.out.println(responseIdentifier);
         SimpleChoiceRenderer renderer = item.getInteraction(0);
-        for (String choice : renderer.getChoices().keySet()) {
-            System.out.println(choice);
-        }
-
         return renderer.getChoices().get(identifier);
     }
 
     public String getItemCorrectAnswer(TestPlanNode itemRef) {
-        Map decMap = this.getItem(itemRef).itemProcessingMap.getValidResponseDeclarationMap();
         AssessmentItemWrapper item = this.getItem(itemRef);
-        //item.itemSessionState.getOverriddenCorrectResponseValue()
+        final AssessmentItem assessmentItem = item.itemSessionController.getSubjectItem();
+        ResponseDeclaration declaration = assessmentItem.getResponseDeclarations().get(0);
+        CorrectResponse correctrespone = declaration.getCorrectResponse();
+        String correctAnswerIdentifier = correctrespone.getFieldValues().get(0).getSingleValue().toQtiString();
+        SimpleChoiceRenderer renderer = item.getInteraction(0);
+        correctAnswerIdentifier = correctAnswerIdentifier.substring(1);
+//        for( String key: renderer.getChoices().keySet()) {
+//            System.out.println(key);
+//        }
 
-        return "NE ZNAM";
-        //return this.getItem(itemRef).itemProcessingMap.getValidResponseDeclarationMap().get(0).getCorrectResponse().getInterpretation();
+        return renderer.getChoices().get(correctAnswerIdentifier);
     }
 }

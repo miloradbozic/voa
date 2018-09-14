@@ -92,6 +92,10 @@ public class AssessmentItemWrapper {
         renderer.render();
     }
 
+    public ItemProcessingMap getItemProcessingMap() {
+        return itemProcessingMap;
+    }
+
     public SimpleChoiceRenderer getInteraction(int index) {
         SimpleChoiceRenderer renderer = new SimpleChoiceRenderer();
         List<Interaction> interactions = this.itemProcessingMap.getInteractions();
