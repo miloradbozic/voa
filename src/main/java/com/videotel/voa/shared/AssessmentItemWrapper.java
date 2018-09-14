@@ -45,6 +45,7 @@ public class AssessmentItemWrapper {
         final SimpleJqtiFacade simpleJqtiFacade = new SimpleJqtiFacade();
         final ResolvedAssessmentItem resolvedAssessmentItem = simpleJqtiFacade.loadAndResolveAssessmentItem(inputResourceLocator, inputUri);
 
+
         //System.out.println(resolvedAssessmentItem);
         this.itemProcessingMap = new ItemProcessingInitializer(resolvedAssessmentItem, false).initialize();
         //System.out.println("Run map is: " + ObjectDumper.dumpObject(this.itemProcessingMap, DumpMode.DEEP));
