@@ -4,34 +4,17 @@ import com.videotel.voa.response.ChoiceResponse;
 import com.videotel.voa.response.TestSummaryResponse;
 import com.videotel.voa.shared.AssessmentTestWrapper;
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import uk.ac.ed.ph.jqtiplus.JqtiExtensionManager;
-import uk.ac.ed.ph.jqtiplus.internal.util.ObjectDumper;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import sun.security.pkcs11.wrapper.Constants;
 import uk.ac.ed.ph.jqtiplus.internal.util.ObjectUtilities;
-import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
-import uk.ac.ed.ph.jqtiplus.node.outcome.declaration.OutcomeDeclaration;
-import uk.ac.ed.ph.jqtiplus.node.shared.FieldValue;
-import uk.ac.ed.ph.jqtiplus.node.shared.declaration.DefaultValue;
-import uk.ac.ed.ph.jqtiplus.reading.QtiObjectReader;
-import uk.ac.ed.ph.jqtiplus.reading.QtiXmlReader;
-import uk.ac.ed.ph.jqtiplus.resolution.AssessmentObjectResolver;
-import uk.ac.ed.ph.jqtiplus.resolution.ResolvedAssessmentItem;
-import uk.ac.ed.ph.jqtiplus.serialization.QtiSerializer;
 import uk.ac.ed.ph.jqtiplus.state.TestPlanNode;
-import uk.ac.ed.ph.jqtiplus.types.Identifier;
-import uk.ac.ed.ph.jqtiplus.validation.AssessmentObjectValidator;
-import uk.ac.ed.ph.jqtiplus.validation.ItemValidationResult;
-import uk.ac.ed.ph.jqtiplus.value.BaseType;
-import uk.ac.ed.ph.jqtiplus.value.Cardinality;
-import uk.ac.ed.ph.jqtiplus.value.FloatValue;
-import uk.ac.ed.ph.jqtiplus.xmlutils.locators.NullResourceLocator;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -42,7 +25,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class RunnerController {
 
-    private AssessmentTestWrapper test;
     private int currentQuestion = 1;
 
     public RunnerController() {
@@ -50,8 +32,9 @@ public class RunnerController {
     }
 
     @RequestMapping(value="/start", method = GET)
-    public ChoiceResponse start() {
-        test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
+    public ChoiceResponse start(HttpSession session) {
+        AssessmentTestWrapper test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
+        session.setAttribute("assessment", test);
         currentQuestion = 1;
         Date testEntryTimestamp = new Date();
         Date testPartEntryTimestamp = ObjectUtilities.addToTime(testEntryTimestamp, 1000L);
@@ -67,8 +50,9 @@ public class RunnerController {
 
     //@todo fix when there are no more questions left
     @RequestMapping(value="/next", method = GET)
-    public ChoiceResponse next() {
+    public ChoiceResponse next(HttpSession session) {
         System.out.println("\nMoving to the next item...");
+        AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.testSessionController.advanceItemLinear(new Date());
         //test.getCurrentItem().renderItem();
         SimpleChoiceRenderer renderer = test.getCurrentItem().getInteraction(0);
@@ -76,9 +60,9 @@ public class RunnerController {
     }
 
     @RequestMapping(value = "/submit-answer", method = POST)
-    public Map add(@RequestParam("answerId") String answerId) {
+    public Map add(@RequestParam("answerId") String answerId, HttpSession session) {
         System.out.println(answerId);
-
+        AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.handleChoiceResponse(new Date(), "c" + answerId);
         //get score item1
         String scoreItem1 = test.getItemScore(1); //i1
@@ -100,7 +84,8 @@ public class RunnerController {
     }
 
     @RequestMapping(value = "/finish", method = POST)
-    public TestSummaryResponse finish() {
+    public TestSummaryResponse finish(HttpSession session) {
+        AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.testSessionController.endCurrentTestPart(new Date());
         test.testSessionController.enterNextAvailableTestPart(new Date()); // when no more it sets text exit time so we can exit it
         test.testSessionController.exitTest(new Date());
