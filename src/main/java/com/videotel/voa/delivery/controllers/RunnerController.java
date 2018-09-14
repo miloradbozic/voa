@@ -27,13 +27,15 @@ public class RunnerController {
 
     private int currentQuestion = 1;
 
+    private AssessmentTestWrapper test;
+
     public RunnerController() {
 
     }
 
     @RequestMapping(value="/start", method = GET)
     public ChoiceResponse start(HttpSession session) {
-        AssessmentTestWrapper test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
+        test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
         session.setAttribute("assessment", test);
         currentQuestion = 1;
         Date testEntryTimestamp = new Date();
@@ -52,9 +54,8 @@ public class RunnerController {
     @RequestMapping(value="/next", method = GET)
     public ChoiceResponse next(HttpSession session) {
         System.out.println("\nMoving to the next item...");
-        AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
+        //AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.testSessionController.advanceItemLinear(new Date());
-        //test.getCurrentItem().renderItem();
         SimpleChoiceRenderer renderer = test.getCurrentItem().getInteraction(0);
         return new ChoiceResponse(renderer, 3, currentQuestion++);
     }
@@ -62,7 +63,7 @@ public class RunnerController {
     @RequestMapping(value = "/submit-answer", method = POST)
     public Map add(@RequestParam("answerId") String answerId, HttpSession session) {
         System.out.println(answerId);
-        AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
+        //AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.handleChoiceResponse(new Date(), "c" + answerId);
         //get score item1
         String scoreItem1 = test.getItemScore(1); //i1
@@ -85,7 +86,7 @@ public class RunnerController {
 
     @RequestMapping(value = "/finish", method = POST)
     public TestSummaryResponse finish(HttpSession session) {
-        AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
+        //AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.testSessionController.endCurrentTestPart(new Date());
         test.testSessionController.enterNextAvailableTestPart(new Date()); // when no more it sets text exit time so we can exit it
         test.testSessionController.exitTest(new Date());
