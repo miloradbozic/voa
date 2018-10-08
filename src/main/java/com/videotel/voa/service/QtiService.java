@@ -9,6 +9,7 @@ import uk.ac.ed.ph.jqtiplus.JqtiExtensionManager;
 import uk.ac.ed.ph.jqtiplus.internal.util.ObjectDumper;
 import uk.ac.ed.ph.jqtiplus.node.content.ItemBody;
 import uk.ac.ed.ph.jqtiplus.node.content.basic.TextRun;
+import uk.ac.ed.ph.jqtiplus.node.expression.general.BaseValue;
 import uk.ac.ed.ph.jqtiplus.node.item.AssessmentItem;
 import uk.ac.ed.ph.jqtiplus.node.item.CorrectResponse;
 import uk.ac.ed.ph.jqtiplus.node.item.interaction.ChoiceInteraction;
@@ -20,6 +21,8 @@ import uk.ac.ed.ph.jqtiplus.node.outcome.declaration.OutcomeDeclaration;
 import uk.ac.ed.ph.jqtiplus.node.shared.FieldValue;
 import uk.ac.ed.ph.jqtiplus.node.shared.declaration.DefaultValue;
 import uk.ac.ed.ph.jqtiplus.node.test.*;
+import uk.ac.ed.ph.jqtiplus.node.test.outcome.processing.OutcomeProcessing;
+import uk.ac.ed.ph.jqtiplus.node.test.outcome.processing.SetOutcomeValue;
 import uk.ac.ed.ph.jqtiplus.reading.QtiObjectReader;
 import uk.ac.ed.ph.jqtiplus.reading.QtiXmlReader;
 import uk.ac.ed.ph.jqtiplus.resolution.AssessmentObjectResolver;
@@ -91,7 +94,7 @@ public class QtiService {
         choiceInteraction.setPrompt(prompt);
         prompt.getInlineStatics().add(new TextRun(prompt, question.getQuestion()));
 
-        for (int i=1; i<=5; ++i) {
+        for (int i=1; i<=3; ++i) {
             if (!question.getChoice(i).equals("")) {
                 final SimpleChoice simpleChoice = new SimpleChoice(choiceInteraction);
                 simpleChoice.setIdentifier(Identifier.assumedLegal("c" + i));
@@ -195,6 +198,15 @@ public class QtiService {
         score.setDefaultValue(defaultValue);
         assessmentTest.getOutcomeDeclarations().add(score);
 
+        final OutcomeDeclaration score2 = new OutcomeDeclaration(assessmentTest);
+        score2.setIdentifier(Identifier.assumedLegal("TEST_SCORE"));
+        score2.setCardinality(Cardinality.SINGLE);
+        score2.setBaseType(BaseType.FLOAT);
+        final DefaultValue defaultValue2 = new DefaultValue(score2);
+        defaultValue2.getFieldValues().add(new FieldValue(defaultValue2, new FloatValue(0.0)));
+        score2.setDefaultValue(defaultValue2);
+        assessmentTest.getOutcomeDeclarations().add(score2);
+
         // Declare test part variable
         final TestPart testPart = new TestPart(assessmentTest);
         testPart.setIdentifier(Identifier.assumedLegal("p"));
@@ -202,7 +214,7 @@ public class QtiService {
         testPart.setSubmissionMode(SubmissionMode.INDIVIDUAL);
         final AssessmentSection assessmentSection = new AssessmentSection(testPart);
         assessmentSection.setVisible(true);
-        assessmentSection.setIdentifier(Identifier.assumedLegal("s1"));
+        assessmentSection.setIdentifier(Identifier.assumedLegal("s"));
         assessmentSection.setTitle("Section");
 
         String number1= assessment.getNumber(1);
@@ -231,6 +243,20 @@ public class QtiService {
 
         testPart.getAssessmentSections().add(assessmentSection);
         assessmentTest.getTestParts().add(testPart);
+
+        //add outcome processing
+        /*
+        final OutcomeProcessing outcomeProcessing = new OutcomeProcessing(assessmentTest);
+        SetOutcomeValue setOutcomeValue = new SetOutcomeValue(outcomeProcessing);
+        setOutcomeValue.setIdentifier(Identifier.assumedLegal("OP_DONE"));
+        //baseValue.getFieldValues().add(new FieldValue(defaultValue2, new FloatValue(0.0)));
+
+        SetOutcomeValue setOutcomeValue2 = new SetOutcomeValue(outcomeProcessing);
+        setOutcomeValue2.setIdentifier(Identifier.assumedLegal("TEST_SCORE"));
+        outcomeProcessing.getOutcomeRules().add(setOutcomeValue);
+        outcomeProcessing.getOutcomeRules().add(setOutcomeValue2);
+        assessmentTest.setOutcomeProcessing(outcomeProcessing);
+        */
 
         //validate
         // @todo

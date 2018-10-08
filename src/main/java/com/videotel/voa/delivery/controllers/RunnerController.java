@@ -1,9 +1,13 @@
 package com.videotel.voa.delivery.controllers;
 
+import com.videotel.voa.model.DbAssessment;
+import com.videotel.voa.repository.DbAssessmentRepository;
 import com.videotel.voa.response.ChoiceResponse;
 import com.videotel.voa.response.TestSummaryResponse;
+import com.videotel.voa.shared.AssessmentItemWrapper;
 import com.videotel.voa.shared.AssessmentTestWrapper;
 import com.videotel.voa.shared.interactions.SimpleChoiceRenderer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +19,7 @@ import uk.ac.ed.ph.jqtiplus.state.TestPlanNode;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -27,22 +32,21 @@ public class RunnerController {
 
     private int currentQuestion = 1;
 
+    @Autowired
+    DbAssessmentRepository dbAssessmentRepository;
+
     private AssessmentTestWrapper test;
 
     public RunnerController() {
 
     }
 
-    @RequestMapping(value="/custom", method = GET)
-    public String custom() {
-        test = new AssessmentTestWrapper("assessment2.xml");
-        System.out.println(test);
-        return "OK";
-    }
-
     @RequestMapping(value="/start", method = GET)
     public ChoiceResponse start(HttpSession session) {
-        test = new AssessmentTestWrapper("assessment2.xml");
+        test = new AssessmentTestWrapper("assessment.xml");
+        AssessmentItemWrapper r = test.getItem(1);
+        System.out.println(r);
+        System.out.println("That was r");
         session.setAttribute("assessment", test);
         currentQuestion = 1;
         Date testEntryTimestamp = new Date();
@@ -54,7 +58,11 @@ public class RunnerController {
         System.out.println("\r\nRendering the next item:");
         //test.getCurrentItem().renderItem();
         SimpleChoiceRenderer renderer = test.getCurrentItem().getInteraction(0);
-        return new ChoiceResponse(renderer, 3, currentQuestion++);
+
+        List<DbAssessment> dbAssessments = dbAssessmentRepository.findAll();
+        DbAssessment assessment = dbAssessments.get(dbAssessments.size() - 1);
+        int total = assessment.getQuestionCount();
+        return new ChoiceResponse(renderer, total, currentQuestion++);
     }
 
     //@todo fix when there are no more questions left
@@ -64,7 +72,10 @@ public class RunnerController {
         //AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.testSessionController.advanceItemLinear(new Date());
         SimpleChoiceRenderer renderer = test.getCurrentItem().getInteraction(0);
-        return new ChoiceResponse(renderer, 3, currentQuestion++);
+        List<DbAssessment> dbAssessments = dbAssessmentRepository.findAll();
+        DbAssessment assessment = dbAssessments.get(dbAssessments.size() - 1);
+        int total = assessment.getQuestionCount();
+        return new ChoiceResponse(renderer, total, currentQuestion++);
     }
 
     @RequestMapping(value = "/submit-answer", method = POST)
@@ -72,6 +83,8 @@ public class RunnerController {
         System.out.println(answerId);
         //AssessmentTestWrapper test = (AssessmentTestWrapper) session.getAttribute("assessment");
         test.handleChoiceResponse(new Date(), "c" + answerId);
+
+        /*
         //get score item1
         String scoreItem1 = test.getItemScore(1); //i1
         System.out.println("First item score: " + scoreItem1);
@@ -83,7 +96,7 @@ public class RunnerController {
         //score item3
         String scoreItem3 = test.getItemScore(3); //i3
         System.out.println("Third item score: " + scoreItem3);
-
+*/
         //check if test scoring is performed
         boolean processed = test.isOutcomeProcessed();
         System.out.println("Test processed: " + processed);

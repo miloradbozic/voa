@@ -17,6 +17,7 @@ import uk.ac.ed.ph.jqtiplus.value.BooleanValue;
 import uk.ac.ed.ph.jqtiplus.value.FloatValue;
 import uk.ac.ed.ph.jqtiplus.value.Value;
 
+import java.net.URI;
 import java.util.*;
 
 /*
@@ -129,6 +130,8 @@ public class AssessmentTestWrapper {
     /* Returns the current item of the test */
     public AssessmentItemWrapper getCurrentItem() {
         TestPlanNodeKey currentItemKey = this.testSessionState.getCurrentItemKey();
+        System.out.println("Current key");
+        System.out.println(currentItemKey);
         TestPlanNode currentTestPlanNode = this.testSessionState.getTestPlan().getNode(currentItemKey);
         String path = currentTestPlanNode.getItemSystemId().toString();
         return new AssessmentItemWrapper(path, currentItemKey.getIdentifier().toString());
@@ -137,12 +140,14 @@ public class AssessmentTestWrapper {
     /* Returns the item with the given identifier */
     public AssessmentItemWrapper getItem(int identifier) {
         String path = this.getItemPathByIdentifier(identifier);
-        return new AssessmentItemWrapper("classpath:/samples/" + path, "i"+identifier);
+        //return new AssessmentItemWrapper("classpath:/samples/" + path, "i"+identifier);
+        return new AssessmentItemWrapper("file:/C:/Users/legion/Code/voa/qtifiles/" + path, "i"+identifier);
+        //return URI.create("file:/C:/Users/legion/Code/voa/qtifiles/" + testFilePath);
     }
 
     public AssessmentItemWrapper getItem(TestPlanNode itemRef) {
         String path = this.getItemPathByRefNode(itemRef);
-        return new AssessmentItemWrapper("classpath:/samples/" + path, itemRef.getIdentifier().toString());
+        return new AssessmentItemWrapper("file:/C:/Users/legion/Code/voa/qtifiles/" + path, itemRef.getIdentifier().toString());
     }
 
     /** Private methods ***/

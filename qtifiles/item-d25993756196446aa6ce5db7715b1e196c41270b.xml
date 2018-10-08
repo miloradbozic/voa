@@ -1,4 +1,4 @@
-<assessmentItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" identifier="item-item-db974d543f1a6f6679be6290d6f6c9319911064f" title="Hello, how are you?" adaptive="false" timeDependent="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd">
+<assessmentItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" identifier="item-item-d25993756196446aa6ce5db7715b1e196c41270b" title="Pitanje?" adaptive="false" timeDependent="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd">
   <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
     <correctResponse>
       <value>c2</value>
@@ -11,10 +11,10 @@
   </outcomeDeclaration>
   <itemBody>
     <choiceInteraction responseIdentifier="RESPONSE" shuffle="true" maxChoices="1">
-      <prompt>Hello, how are you?</prompt>
-      <simpleChoice identifier="c1">Good</simpleChoice>
-      <simpleChoice identifier="c2">Bad</simpleChoice>
-      <simpleChoice identifier="c3">Fine</simpleChoice>
+      <prompt>Pitanje?</prompt>
+      <simpleChoice identifier="c1">Odg1</simpleChoice>
+      <simpleChoice identifier="c2">Odg2</simpleChoice>
+      <simpleChoice identifier="c3">Odg3</simpleChoice>
     </choiceInteraction>
   </itemBody>
   <responseProcessing template="http://www.imsglobal.org/question/qti_v2p1/rptemplates/match_correct"/>

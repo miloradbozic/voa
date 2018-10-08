@@ -4,16 +4,15 @@
       <value>0.0</value>
     </defaultValue>
   </outcomeDeclaration>
-  <outcomeDeclaration identifier="TEST_SCORE" baseType="float" cardinality="single">
+  <outcomeDeclaration identifier="TEST_SCORE" cardinality="single" baseType="float">
     <defaultValue>
-      <value baseType="float">0.0</value>
+      <value>0.0</value>
     </defaultValue>
   </outcomeDeclaration>
   <testPart identifier="p" navigationMode="linear" submissionMode="individual">
     <assessmentSection identifier="s" title="Section" visible="true">
       <assessmentItemRef identifier="i1" href="item-faf5aeb10744f54790189beea08187a76279106f.xml"/>
-      <assessmentItemRef identifier="i2" href="item-40221b39f9097ce20b4f6dbb664157f671df1461.xml"/>
-      <assessmentItemRef identifier="i3" href="item-db974d543f1a6f6679be6290d6f6c9319911064f.xml"/>
+      <assessmentItemRef identifier="i2" href="item-d25993756196446aa6ce5db7715b1e196c41270b.xml"/>
     </assessmentSection>
   </testPart>
 </assessmentTest>

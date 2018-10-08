@@ -116,4 +116,14 @@ public class Assessment {
             return null;
         }
     }
+
+    public int getQuestionCount() {
+        int question_count = 0;
+        for (int i = 1; i <= 6; ++i) {
+            if (this.getNumber(i) != null && !this.getNumber(i).equals("")) {
+                question_count += Integer.parseInt(this.getNumber(i));
+            }
+        }
+        return question_count;
+    }
 }

@@ -2,8 +2,10 @@ package com.videotel.voa.authoring;
 
 import com.videotel.voa.model.Assessment;
 import com.videotel.voa.model.AssessmentItem;
+import com.videotel.voa.model.DbAssessment;
 import com.videotel.voa.model.Question;
 import com.videotel.voa.repository.AssessmentItemRepository;
+import com.videotel.voa.repository.DbAssessmentRepository;
 import com.videotel.voa.service.QtiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ public class QuestionController {
 
     @Autowired
     AssessmentItemRepository assessmentItemRepository;
+
+    @Autowired
+    DbAssessmentRepository dbAssessmentRepository;
 
     @GetMapping("/question")
     public String questionForm(Model model) {
@@ -57,7 +62,7 @@ public class QuestionController {
     @PostMapping("/assessment")
     public String assessmentSubmit(@ModelAttribute Assessment assessment) {
         String xmlPath = qtiService.generateAssessmentXml(assessment);
-        //assessmentItemRepository.save(new AssessmentItem(xmlPath, "English Language"));
+        dbAssessmentRepository.save(new DbAssessment("assessment.xml", assessment.getQuestionCount()));
         return "result";
     }
 
