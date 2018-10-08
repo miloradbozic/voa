@@ -33,9 +33,16 @@ public class RunnerController {
 
     }
 
+    @RequestMapping(value="/custom", method = GET)
+    public String custom() {
+        test = new AssessmentTestWrapper("assessment2.xml");
+        System.out.println(test);
+        return "OK";
+    }
+
     @RequestMapping(value="/start", method = GET)
     public ChoiceResponse start(HttpSession session) {
-        test = new AssessmentTestWrapper("samples/simple-linear-individual.xml");
+        test = new AssessmentTestWrapper("assessment2.xml");
         session.setAttribute("assessment", test);
         currentQuestion = 1;
         Date testEntryTimestamp = new Date();

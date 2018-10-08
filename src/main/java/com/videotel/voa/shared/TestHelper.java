@@ -45,6 +45,7 @@ import uk.ac.ed.ph.jqtiplus.types.Identifier;
 import uk.ac.ed.ph.jqtiplus.xmlutils.XmlReadResult;
 import uk.ac.ed.ph.jqtiplus.xmlutils.XmlResourceNotFoundException;
 import uk.ac.ed.ph.jqtiplus.xmlutils.locators.ClassPathResourceLocator;
+import uk.ac.ed.ph.jqtiplus.xmlutils.locators.FileResourceLocator;
 import uk.ac.ed.ph.jqtiplus.xmlutils.locators.ResourceLocator;
 
 import java.net.URI;
@@ -59,7 +60,9 @@ public final class TestHelper {
 
 
     public static URI createTestResourceUri(final String testFilePath) {
-        return URI.create("classpath:/" + testFilePath);
+        //return URI.create("classpath:/" + testFilePath);
+        System.out.println(testFilePath);
+        return URI.create("file:/C:/Users/legion/Code/voa/qtifiles/" + testFilePath);
     }
 
     public static JqtiExtensionManager createJqtiExtensionManager() {
@@ -71,7 +74,8 @@ public final class TestHelper {
     }
 
     public static ResourceLocator createTestFileResourceLocator() {
-        return new ClassPathResourceLocator();
+        //return new ClassPathResourceLocator();
+        return new FileResourceLocator();
     }
 
 

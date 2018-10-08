@@ -1,0 +1,14 @@
+<assessmentTest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" identifier="MYTest" title="Videotel Test Example" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd">
+  <outcomeDeclaration identifier="OP_DONE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0.0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+  <testPart identifier="p" navigationMode="linear" submissionMode="individual">
+    <assessmentSection identifier="s" title="Section" visible="true">
+      <assessmentItemRef identifier="i1" href="item-faf5aeb10744f54790189beea08187a76279106f.xml"/>
+      <assessmentItemRef identifier="i2" href="item-40221b39f9097ce20b4f6dbb664157f671df1461.xml"/>
+      <assessmentItemRef identifier="i3" href="item-db974d543f1a6f6679be6290d6f6c9319911064f.xml"/>
+    </assessmentSection>
+  </testPart>
+</assessmentTest>

@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/api/author/")
@@ -62,7 +63,6 @@ public class AuthorController {
                                  @RequestParam("choice2") String choice2,
                                  @RequestParam("choice3") String choice3,
                                  @RequestParam("answer") String answer) {
-
 
     String randomString = this.getRandomString();
     final AssessmentItem assessmentItem = new AssessmentItem();

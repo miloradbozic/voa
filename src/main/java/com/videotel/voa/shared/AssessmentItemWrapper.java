@@ -15,6 +15,7 @@ import uk.ac.ed.ph.jqtiplus.types.Identifier;
 import uk.ac.ed.ph.jqtiplus.types.ResponseData;
 import uk.ac.ed.ph.jqtiplus.types.StringResponseData;
 import uk.ac.ed.ph.jqtiplus.xmlutils.locators.ClassPathResourceLocator;
+import uk.ac.ed.ph.jqtiplus.xmlutils.locators.FileResourceLocator;
 import uk.ac.ed.ph.jqtiplus.xmlutils.locators.ResourceLocator;
 
 import java.net.URI;
@@ -39,7 +40,8 @@ public class AssessmentItemWrapper {
     }
 
     public void initItemSessionController() {
-        final ResourceLocator inputResourceLocator = new ClassPathResourceLocator();
+        //final ResourceLocator inputResourceLocator = new ClassPathResourceLocator();
+        final ResourceLocator inputResourceLocator = new FileResourceLocator();
         final URI inputUri = URI.create(this.filePath);
 
         final SimpleJqtiFacade simpleJqtiFacade = new SimpleJqtiFacade();
