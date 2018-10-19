@@ -11,8 +11,12 @@
   </outcomeDeclaration>
   <testPart identifier="p" navigationMode="linear" submissionMode="individual">
     <assessmentSection identifier="s" title="Section" visible="true">
-      <assessmentItemRef identifier="i1" href="item-faf5aeb10744f54790189beea08187a76279106f.xml"/>
-      <assessmentItemRef identifier="i2" href="item-d25993756196446aa6ce5db7715b1e196c41270b.xml"/>
+      <assessmentItemRef identifier="i1" href="item-673ab6586b15753a20a6ef8685e0649c83cd9857.xml"/>
+      <assessmentItemRef identifier="i2" href="item-cbb7875907cb0b98906569db28ba722312c2950f.xml"/>
+      <assessmentItemRef identifier="i3" href="item-72ddfead365678a3c9486631e38ede594566e31a.xml"/>
+      <assessmentItemRef identifier="i4" href="item-e9aad8162e86e840cca6c61109ae10d5a032d755.xml"/>
+      <assessmentItemRef identifier="i5" href="item-490ad35a2be3153e3f02146baa4289de67a7aac6.xml"/>
+      <assessmentItemRef identifier="i6" href="item-59cdeef6068881318379f31c9bf56334480c60c4.xml"/>
     </assessmentSection>
   </testPart>
 </assessmentTest>
